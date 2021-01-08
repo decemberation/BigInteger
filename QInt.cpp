@@ -103,6 +103,16 @@ QInt QInt::operator=(QInt example)
 	return *this;
 }
 
+bool QInt::operator==(QInt example)
+{
+	for (int i = 0; i < QINT_SIZE; i++)
+	{
+		if (this->arr[i] != example.arr[i])
+			return false;
+	}
+	return true;
+}
+
 // Cộng 2 biến QInt
 QInt QInt::operator+(QInt example)
 {
@@ -156,6 +166,9 @@ QInt QInt::operator-(QInt example)
 // Nhân 2 biến QInt theo thuật toán Booth
 QInt QInt::operator*(QInt example)
 {
+	QInt z = z.zero();
+	if (*this == z || example == z)
+		return z;
 	// A Q Q1
 	bool Q1 = 0;
 	QInt A;
@@ -230,8 +243,62 @@ QInt QInt::operator%(QInt example)
 	QInt ret;
 	QInt x = *this;
 	QInt y = example;
-	ret = x - (x / y) * y;
-	return ret;
+	QInt a = x / y;
+	QInt b = a * y;
+	QInt c = x - b;
+	return c;
+}
+
+QInt QInt::modularAddition(QInt x, QInt y, QInt m)
+{
+	QInt a = x % m;
+	QInt b = y % m;
+	QInt c = a + b;
+	return c % m;
+}
+
+QInt QInt::modularMultiplication(QInt x, QInt y, QInt m)
+{
+	QInt a = x % m;
+	QInt b = y % m;
+	QInt c = a * b;
+	return c % m;
+}
+
+QInt QInt::modularExponentiaton(QInt x, QInt y, QInt m)
+{
+	QInt z;
+	if (y == z.zero()) return z.one();
+	else if ((y & z.one()) == z.one()) {
+		QInt a = x % m;
+		QInt y1 = y - z.one();
+		QInt b = a * modularExponentiaton(x, y1, m);
+		return b % m;
+	}
+	else {
+		QInt y2 = y >> 1;
+		QInt tmp = modularExponentiaton(x, y2, m);
+		QInt ans = modularMultiplication(tmp, tmp, m);
+		return ans;
+	}
+}
+
+bool QInt::operator>(QInt example)
+{
+	QInt x = *this;
+	QInt y = example;
+	if ((x - y).isNegative() == false)
+		return true;
+	return false;
+}
+
+bool QInt::operator<(QInt example)
+{
+	QInt x = *this;
+	QInt y = example;
+	if ((x - y).isNegative() == true)
+		return true;
+	return false;
 }
 
 // Phép NOT
@@ -388,6 +455,7 @@ QInt QInt::inverse()
 			ret.arr[i]++;
 			return ret;
 		}
+	return ret;
 }
 
 // trả về dãy nhị phân

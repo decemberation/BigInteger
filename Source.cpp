@@ -1,5 +1,4 @@
 ﻿#include "QInt.h"
-#define _CRT_SECURE_NO_WARNINGS
 
 //trả về từ đầu tiên sau vị trí first trong dãy str (từ là 1 chuỗi kí tự liên tục không có kí tự trông)
 string getWord(string str, int& first)
@@ -26,6 +25,7 @@ void process()
 	while (!cin.eof())
 	{
 		QInt s1, s2; // giá trị đầu vào 1 và 2(nếu có)
+		QInt m;
 		string tmp = ""; // biến tạm: tùy trường hợp xem như p2 | chuỗi giá trị | toán tử
 		string p1 = ""; // hệ số của chuỗi giá trị đầu vào
 		string s = ""; // phép toán đọc từ cin
@@ -48,7 +48,7 @@ void process()
 			int remember = firstchar;
 
 			tmp = getWord(s, firstchar);
-			if (!(tmp == "+" || tmp == "-" || tmp == "*" || tmp == "/" || tmp == "%" || tmp == "<<" || tmp == ">>" || tmp == "^" || tmp == "|" || tmp == "&" || tmp == "<<" || tmp == ">>")) // tmp la toan hang => doi he
+			if (!(tmp == "+" || tmp == "-" || tmp == "*" || tmp == "/" || tmp == "%" || tmp == "+%" || tmp == "*%" || tmp == "^%" || tmp == "<<" || tmp == ">>" || tmp == "^" || tmp == "|" || tmp == "&" || tmp == "<<" || tmp == ">>")) // tmp la toan hang => doi he
 			{
 				s1.scanfQInt(tmp, stoi(p1));
 				s1.printfQInt(stoi(str));
@@ -119,6 +119,27 @@ void process()
 			else if (tmp == "%")
 			{
 				(s1 % s2).printfQInt(stoi(p1));
+				cout << endl;
+			}
+			else if (tmp == "+%")
+			{	
+				QInt ans;
+				m.scanfQInt(getWord(s, firstchar), stoi(p1));
+				(ans.modularAddition(s1, s2, m)).printfQInt(stoi(p1));
+				cout << endl;
+			}
+			else if (tmp == "*%")
+			{
+				QInt ans;
+				m.scanfQInt(getWord(s, firstchar), stoi(p1));
+				(ans.modularMultiplication(s1, s2, m)).printfQInt(stoi(p1));
+				cout << endl;
+			}
+			else if (tmp == "^%")
+			{
+				QInt ans;
+				m.scanfQInt(getWord(s, firstchar), stoi(p1));
+				(ans.modularExponentiaton(s1, s2, m)).printfQInt(stoi(p1));
 				cout << endl;
 			}
 			else if (tmp == "&")

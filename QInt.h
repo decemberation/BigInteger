@@ -24,11 +24,18 @@ public:
 	void printfQInt(int base);
 
 	QInt operator=(QInt example);
+	bool operator==(QInt example);
 	QInt operator+(QInt example);
 	QInt operator-(QInt example);
 	QInt operator*(QInt example);
 	QInt operator/(QInt example);
 	QInt operator%(QInt example);
+	QInt modularAddition(QInt x, QInt y, QInt m);
+	QInt modularMultiplication(QInt x, QInt y, QInt m);
+	QInt modularExponentiaton(QInt x, QInt y, QInt m);
+	bool operator>(QInt example);
+	bool operator<(QInt example);
+
 
 	QInt operator~();
 	QInt operator|(QInt example);
